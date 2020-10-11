@@ -1,22 +1,22 @@
-package sk.tuke.kpi.oop.game;
+package sk.tuke.kpi.oop.game.tools;
 
 
-import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
+import sk.tuke.kpi.oop.game.tools.BreakableTool;
 
 import java.util.Objects;
 
-public class Hammer extends AbstractActor {
+public class Hammer extends BreakableTool {
     private int uses;
     private Animation hammerAnim;
 
     public Hammer() {
-        this.uses = 1;
+        super(1);
         hammerAnim = new Animation("sprites/hammer.png");
         setAnimation(hammerAnim);
 
     }
-    //nemusi fungovat spravne uloha 1.2
+
     public void use() {
         if (getUses()>0) this.uses = getUses()-1;
         if(getUses() <= 0) {
@@ -26,5 +26,9 @@ public class Hammer extends AbstractActor {
 
     public int getUses() {
         return uses;
+    }
+
+    public void setUses(int uses) {
+        this.uses=uses;
     }
 }

@@ -21,8 +21,7 @@ public class Light extends AbstractActor {
     public void toggle() {
         if (isOn) {
             isOn=false;
-        }
-        else {
+        } else {
             isOn = true;
         }
         updateAnimation();
@@ -34,7 +33,7 @@ public class Light extends AbstractActor {
 
     }
 
-    public void updateAnimation() {
+    private void updateAnimation() {
         if(isOn && isPowered) {
             setAnimation(lightAnimOn);
         }
