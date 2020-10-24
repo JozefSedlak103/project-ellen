@@ -5,14 +5,16 @@ import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.actions.PerpetualReactorHeating;
-import sk.tuke.kpi.oop.game.tools.FireExtinguisher;
-import sk.tuke.kpi.oop.game.tools.Hammer;
 
-public class Reactor extends AbstractActor {
+import java.util.HashSet;
+import java.util.Set;
+
+public class Reactor extends AbstractActor implements Switchable, Repairable {
     int temperature;
     int damage;
     boolean isOn = false;
-    public Light light;
+    public EnergyConsumer device;
+    private Set<EnergyConsumer> devices;
     Animation normalAnimation;
     Animation hotAnimation;
     Animation brokenAnimation;
@@ -20,6 +22,7 @@ public class Reactor extends AbstractActor {
     Animation extinguishedAnimation;
 
     public Reactor() {
+        devices = new HashSet<>();
         hotAnimation = new Animation("sprites/reactor_hot.png", 80, 80, 0.05f, Animation.PlayMode.LOOP_PINGPONG);
         brokenAnimation = new Animation("sprites/reactor_broken.png",80,80,0.1f,Animation.PlayMode.LOOP_PINGPONG);
         normalAnimation = new Animation("sprites/reactor_on.png",80,80,0.1f,Animation.PlayMode.LOOP_PINGPONG);
@@ -60,8 +63,8 @@ public class Reactor extends AbstractActor {
             damage = 100;
             updateAnimation();
             isOn=false;
-            if(light!=null) {
-                light.setElectricityFlow(false);
+            if(device!=null) {
+                device.setPowered(false);
             }
         }
         updateAnimation();
@@ -107,57 +110,67 @@ public class Reactor extends AbstractActor {
         }
     }
 
-    public void repairWith(Hammer hammer) {
-        if (hammer!=null && getDamage()>0 && getDamage()<100) {
+    public boolean repair() {
+        if (getDamage()>0 && getDamage()<100) {
             damage = getDamage()-50;
             decTempRep();
-            hammer.use();
+            if(2000+(damage*40)<temperature) {
+                setTemperature(2000 + (damage * 40));
+            }
+
             if(getDamage()<0) damage=0;
             updateAnimation();
         }
+        return true;
     }
 
-    public void extinguishWith(FireExtinguisher fireExtinguisher) {
-        if (fireExtinguisher!=null && getDamage()>=100) {
-            temperature = 4000;
-            fireExtinguisher.use();
-            updateAnimation();
-        }
+    //uloha 4.3 otestovat funkcnost
+    //pokracovat ulohou 4.4
+
+    private void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public boolean extinguish() {
+        temperature = temperature - 4000;
+        if(temperature<0) temperature = 0;
+        updateAnimation();
+        return true;
     }
 
     public void turnOn() {
         isOn = true;
         updateAnimation();
-        if(getDamage()<100) {
-            light.setElectricityFlow(true);
+        if(device!=null && getDamage()<100) {
+            device.setPowered(true);
         }
     }
 
     public void turnOff() {
         isOn = false;
         updateAnimation();
-        if(light!=null) {
-            light.setElectricityFlow(false);
+        if(device!=null) {
+            device.setPowered(false);
         }
     }
 
-    public boolean isRunning() {
+    public boolean isOn() {
         if (isOn) {return true;}
         else {return false;}
     }
 
-    public void addLight(Light light) {
-        if(this.light==null) {
-            light.setElectricityFlow(true);
+    public void addDevice(EnergyConsumer device) {
+        if(device!=null) {
+            devices.add(device);
+            device.setPowered(true);
         }
-        this.light = light;
     }
 
-    public void removeLight() {
-        if(this.light!=null) {
-            light.setElectricityFlow(false);
+    public void removeDevice(EnergyConsumer device) {
+        if (device!=null) {
+            devices.remove(device);
+            device.setPowered(false);
         }
-        this.light = null;
     }
 
     @Override

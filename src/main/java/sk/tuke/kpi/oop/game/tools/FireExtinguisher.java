@@ -1,12 +1,11 @@
 package sk.tuke.kpi.oop.game.tools;
 
 import sk.tuke.kpi.gamelib.graphics.Animation;
-import sk.tuke.kpi.oop.game.tools.BreakableTool;
+import sk.tuke.kpi.oop.game.Reactor;
 
-import java.util.Objects;
-
-public class FireExtinguisher extends BreakableTool {
+public class FireExtinguisher extends BreakableTool<Reactor> {
     int uses;
+    private Reactor reactor;
     Animation extinguisherAnim;
 
     public FireExtinguisher() {
@@ -15,10 +14,18 @@ public class FireExtinguisher extends BreakableTool {
         setAnimation(extinguisherAnim);
     }
 
-    public void use() {
-        if(getUses()>0) this.uses = getUses() - 1;
-        if(getUses() <= 0) {
-            Objects.requireNonNull(this.getScene()).removeActor(this);
+    public FireExtinguisher(Reactor reactor) {
+        super(1);
+        extinguisherAnim = new Animation("sprites/extinguisher.png");
+        this.reactor = reactor;
+    }
+
+    public void useWith(Reactor reactor) {
+        if (reactor!=null) {
+            if (this.reactor == reactor) {
+                reactor.extinguish();
+                super.useWith(reactor);
+            }
         }
     }
 

@@ -5,15 +5,14 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 
 import java.util.Objects;
 
-public class Hammer extends BreakableTool {
+public class Wrench extends BreakableTool {
     private int uses;
-    private Animation hammerAnim;
+    private Animation wrenchanim;
 
-    public Hammer() {
-        super(1);
-        hammerAnim = new Animation("sprites/hammer.png");
-        setAnimation(hammerAnim);
-
+    public Wrench() {
+        super(2);
+        wrenchanim = new Animation("sprites/wrench.png");
+        setAnimation(wrenchanim);
     }
 
     public void use() {
