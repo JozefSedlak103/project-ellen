@@ -2,32 +2,42 @@ package sk.tuke.kpi.oop.game.tools;
 
 
 import sk.tuke.kpi.gamelib.graphics.Animation;
+import sk.tuke.kpi.oop.game.Reactor;
+import sk.tuke.kpi.oop.game.Repairable;
 
-import java.util.Objects;
-
-public class Hammer extends BreakableTool {
-    private int uses;
-    private Animation hammerAnim;
+public class Hammer extends BreakableTool<Repairable> {
+    private Animation hammerAnim = new Animation("sprites/hammer.png");
+    private Reactor reactor;
 
     public Hammer() {
         super(1);
-        hammerAnim = new Animation("sprites/hammer.png");
         setAnimation(hammerAnim);
-
+        reactor=null;
     }
 
-    public void use() {
-        if (getUses()>0) this.uses = getUses()-1;
-        if(getUses() <= 0) {
-            Objects.requireNonNull(this.getScene()).removeActor(this);
+    public Hammer(Reactor reactor) {
+        super(1);
+        setAnimation(hammerAnim);
+        this.reactor=reactor;
+    }
+    Hammer(int remainingUses){
+        super(remainingUses);
+        setAnimation(hammerAnim);
+        this.reactor=null;
+    }
+    Hammer(int remainingUses, Reactor reactor){
+        super(remainingUses);
+        setAnimation(hammerAnim);
+        this.reactor=reactor;
+    }
+
+    @Override
+    public void useWith(Repairable reactor) {
+        if(reactor==null) {
+            return;
         }
-    }
-
-    public int getUses() {
-        return uses;
-    }
-
-    public void setUses(int uses) {
-        this.uses=uses;
+        if(reactor.repair()){
+            super.useWith(this.reactor);
+        }
     }
 }

@@ -14,10 +14,10 @@ abstract class BreakableTool<B extends Actor> extends AbstractActor implements U
 
     @Override
     public void useWith(B tool) {
-        if (tool!=null && remainingUses>0)
+        if (remainingUses>0)
             this.remainingUses = remainingUses-1;
         if(remainingUses <= 0) {
-            Objects.requireNonNull(this.getScene()).removeActor(this);
+            this.getScene().removeActor(this);
         }
     }
     public int getRemainingUses() {
