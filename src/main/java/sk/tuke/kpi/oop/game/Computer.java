@@ -5,7 +5,7 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Computer extends AbstractActor implements EnergyConsumer {
-    Animation computerAnimation;
+    private Animation computerAnimation;
     //Animation computerOff;
     private boolean isPowered;
 
