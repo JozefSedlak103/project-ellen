@@ -5,12 +5,10 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.DefectiveLight;
 
 public class Wrench extends BreakableTool<DefectiveLight> {
-    private Animation wrenchanim;
-
 
     public Wrench() {
         super(2);
-        wrenchanim = new Animation("sprites/wrench.png");
+        Animation wrenchanim = new Animation("sprites/wrench.png");
         setAnimation(wrenchanim);
     }
 

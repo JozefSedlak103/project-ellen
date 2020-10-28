@@ -5,7 +5,7 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 import sk.tuke.kpi.oop.game.Reactor;
 import sk.tuke.kpi.oop.game.Repairable;
 
-public class Hammer extends BreakableTool<Repairable> {
+public class Hammer extends BreakableTool<Reactor> {
     private Animation hammerAnim = new Animation("sprites/hammer.png");
     private Reactor reactor;
 
@@ -33,7 +33,7 @@ public class Hammer extends BreakableTool<Repairable> {
     }
 
     @Override
-    public void useWith(Repairable reactor) {
+    public void useWith(Reactor reactor) {
         if(reactor==null) {
             return;
         }

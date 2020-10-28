@@ -20,7 +20,11 @@ public class Helicopter extends AbstractActor {
     @Override
     public void addedToScene(@NotNull Scene scene) {
         super.addedToScene(scene);
-        new Loop<>(new Invoke<>(this::searchAndDestroy)).scheduleFor(this);
+
+    }
+
+    public void searchAndDestroy() {
+        new Loop<>(new Invoke<>(this::killPlayer)).scheduleFor(this);
     }
 
     private int findPositionX() {
@@ -43,7 +47,7 @@ public class Helicopter extends AbstractActor {
         return y;
     }
 
-    public void searchAndDestroy() {
+    public void killPlayer() {
         player = (Player) getScene().getFirstActorByName("Player");
         this.setPosition(findPositionX(),findPositionY());
         if (this.intersects(player)) {
