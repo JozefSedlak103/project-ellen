@@ -9,6 +9,7 @@ public class Hammer extends BreakableTool<Repairable> {
     private Animation hammerAnim = new Animation("sprites/hammer.png");
     private Reactor reactor;
 
+
     public Hammer() {
         super(1);
         setAnimation(hammerAnim);

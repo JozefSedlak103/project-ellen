@@ -13,10 +13,10 @@ import sk.tuke.kpi.oop.game.tools.Hammer;
 import java.util.Map;
 
 public class Gameplay extends Scenario {
-    Reactor reactor = new Reactor();
-    Cooler cooler = new Cooler(reactor);
-    Hammer hammer = new Hammer();
-    PowerSwitch powerSwitch = new PowerSwitch(reactor);
+    private Reactor reactor = new Reactor();
+    private Cooler cooler = new Cooler(reactor);
+    private Hammer hammer = new Hammer();
+    private PowerSwitch powerSwitch = new PowerSwitch(reactor);
     @Override
     public void setupPlay(@NotNull Scene scene) {
         Map<String, MapMarker> markers = scene.getMap().getMarkers();

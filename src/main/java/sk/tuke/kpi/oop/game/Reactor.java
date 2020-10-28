@@ -10,16 +10,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Reactor extends AbstractActor implements Switchable, Repairable {
-    int temperature;
-    int damage;
-    boolean isOn = false;
-    public EnergyConsumer device;
+    private int temperature;
+    private int damage;
+    private boolean isOn = false;
+    private EnergyConsumer device;
     private Set<EnergyConsumer> devices;
-    Animation normalAnimation;
-    Animation hotAnimation;
-    Animation brokenAnimation;
-    Animation offAnimation;
-    Animation extinguishedAnimation;
+    private Animation normalAnimation;
+    private Animation hotAnimation;
+    private Animation brokenAnimation;
+    private Animation offAnimation;
+    private Animation extinguishedAnimation;
 
     public Reactor() {
         devices = new HashSet<>();

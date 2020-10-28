@@ -8,6 +8,7 @@ import sk.tuke.kpi.gamelib.framework.actions.Loop;
 
 public class DefectiveLight extends Light implements Repairable {
     private Disposable blinking;
+
     public DefectiveLight() {
         super();
     }

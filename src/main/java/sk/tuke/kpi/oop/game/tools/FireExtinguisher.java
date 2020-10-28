@@ -5,7 +5,7 @@ import sk.tuke.kpi.oop.game.Reactor;
 
 public class FireExtinguisher extends BreakableTool<Reactor> {
     private Reactor reactor;
-    Animation extinguisherAnim;
+    private Animation extinguisherAnim;
 
     public FireExtinguisher() {
         super(1);

@@ -6,11 +6,9 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Computer extends AbstractActor implements EnergyConsumer {
     private Animation computerAnimation;
-    //Animation computerOff;
     private boolean isPowered;
 
     public Computer() {
-        //computerOff = new Animation("sprites/computer.png",80,80);
         computerAnimation = new Animation("sprites/computer.png",80,48,0.2f,Animation.PlayMode.LOOP_PINGPONG);
         setAnimation(computerAnimation);
     }

@@ -5,10 +5,10 @@ import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Light extends AbstractActor implements Switchable, EnergyConsumer {
-    public boolean isOn;
-    public boolean isPowered;
-    Animation lightAnimOn;
-    Animation lightAnimOff;
+    private boolean isOn;
+    private boolean isPowered;
+    private Animation lightAnimOn;
+    private Animation lightAnimOff;
 
     public Light() {
         this.isPowered = false;
