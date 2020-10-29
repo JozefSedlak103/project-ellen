@@ -1,23 +1,22 @@
 package sk.tuke.kpi.oop.game;
 
+import sk.tuke.kpi.gamelib.actions.ActionSequence;
+import sk.tuke.kpi.gamelib.actions.Invoke;
+import sk.tuke.kpi.gamelib.actions.Wait;
+import sk.tuke.kpi.gamelib.actions.When;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class TimeBomb extends AbstractActor {
-    private AbstractActor timeBomb;
-    private int time;
+    private float time;
     private boolean activated;
     private Animation bombAnim;
     private Animation activeAnim;
     private Animation explosion;
 
 
-    public TimeBomb() {
-        timeBomb = this;
+    public TimeBomb(float time) {
+        this.time = time;
         activated = false;
         bombAnim = new Animation("sprites/bomb.png");
         activeAnim = new Animation("sprites/bomb_activated.png",16,16,0.1f, Animation.PlayMode.LOOP_PINGPONG);
@@ -25,23 +24,23 @@ public class TimeBomb extends AbstractActor {
         setAnimation(bombAnim);
     }
 
+    protected void explode() {
+        setAnimation(explosion);
+        new When<>(
+            ()-> getAnimation().getCurrentFrameIndex() >= 7,
+            new Invoke<>(() -> getScene().removeActor(this))
+        ).scheduleFor(this);
+    }
+
     public void activate() {
         activated = true;
         setAnimation(activeAnim);
-        time = 6;
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                time = time - 1;
-                if (time ==1) {
-                    setAnimation(explosion);
-                    activated = false;
-                } if (time ==0) {
-                    timer.cancel();
-                    Objects.requireNonNull(timeBomb.getScene()).removeActor(timeBomb);
-                }
-            }
-        }, 0, 1000);
+        new ActionSequence<>(
+            new Wait<>(time),
+            new Invoke<>(this::explode)
+        ).scheduleFor(this);
+
+
     }
 
     public boolean isActivated() {
