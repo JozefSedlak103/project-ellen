@@ -1,81 +1,85 @@
 package sk.tuke.kpi.oop.game;
 
-
+import org.jetbrains.annotations.NotNull;
+import sk.tuke.kpi.gamelib.Scene;
+import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.Player;
+import sk.tuke.kpi.gamelib.framework.actions.Loop;
 import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Teleport extends AbstractActor {
     private Teleport destinationTeleport;
     private boolean isOut;
-
-    public Teleport() {
+    public Teleport(){
         setAnimation(new Animation("sprites/lift.png"));
-        isOut=false;
+        isOut =false;
     }
-    public Teleport(Teleport destinationTeleport) {
+
+    public Teleport(Teleport destinationTeleport){
+        setAnimation(new Animation("sprites/lift.png"));
         this.destinationTeleport = destinationTeleport;
-        setAnimation(new Animation("sprites/lift.png"));
-        isOut=false;
-    }
-    private boolean isInMiddle(Player player) {
-        boolean x1=player.getPosX()+16>=this.getPosX();
-        boolean x2=player.getPosX()+16<=this.getPosX()+48;
-        boolean y1=player.getPosY()+16>=this.getPosY();
-        boolean y2=player.getPosY()+16<=this.getPosY()+48;
-        return ((x1&&x2)&&(y1&&y2));
+        isOut =false;
     }
 
-    private boolean teleporting(Player player) {
-        if (!isOut) {
+    @Override
+    public void addedToScene(@NotNull Scene scene) {
+        super.addedToScene(scene);
+        new Loop<>(new Invoke<>(this::teleport)).scheduleFor(this);
+    }
+
+    private boolean canTeleport(Player player){
+        if (!isOut){
             return true;
-        } else {
-            isOut = isInMiddle(player);
+        }else {
+            isOut = isMiddle(player);
             return false;
         }
     }
 
-    public void teleport() {
+
+    public void teleport(){
         Player player=(Player)getScene().getFirstActorByName("Player");
         if(player == null)return;
-        if((teleporting(player)&&(this.intersects(player)&& isInMiddle(player)))&&destinationTeleport!=null){
+        if((canTeleport(player)&&(this.intersects(player)&& isMiddle(player)))&& destinationTeleport !=null){
             destinationTeleport.teleportPlayer(player);
         }
     }
 
-    public Teleport getDestination() {
-        return destinationTeleport;
+    private boolean isMiddle(Player player){
+        boolean a=player.getPosX()+16>=this.getPosX();
+        boolean b=player.getPosX()+16<=this.getPosX()+48;
+        boolean c=player.getPosY()+16>=this.getPosY();
+        boolean d=player.getPosY()+16<=this.getPosY()+48;
+        return ((a&&b)&&(c&&d));
     }
 
-    public void setDestination(Teleport destinationTeleport) {
-        if (destinationTeleport!=this && destinationTeleport!=null) {
-            this.destinationTeleport = destinationTeleport;
-        }
-    }
 
-    private boolean teleported(Player player) {
-        if (player.getPosX()>=this.getPosX() && player.getPosX()+player.getWidth()<=this.getPosX()+this.getWidth()
-        && player.getPosY()>=this.getPosY() && player.getPosY()+player.getHeight()<=this.getPosY()+this.getHeight()) {
-            return true;
-        } else {
-            return false;
-        }
 
-    }
-
-    public void teleportPlayer(Player player) {
+    public void teleportPlayer(Player player){
         if(player!=null){
-            this.setIsOut(true);
+            this.setOut(true);
             player.setPosition(this.getPosX()+8,this.getPosY()+8);
 
         }
+    }
+
+
+
+    public Teleport getDestinationTeleport() {
+        return destinationTeleport;
+    }
+
+    public void setDestinationTeleport(Teleport destinationTeleport) {
+        if (destinationTeleport!=this&&destinationTeleport!=null)
+            this.destinationTeleport = destinationTeleport;
     }
 
     public boolean isOut() {
         return isOut;
     }
 
-    private void setIsOut(boolean isOut) {
-        this.isOut = isOut;
+    public void setOut(boolean out) {
+        this.isOut = out;
     }
 }
