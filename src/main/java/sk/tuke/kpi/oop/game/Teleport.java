@@ -7,13 +7,40 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Teleport extends AbstractActor {
     private Teleport destinationTeleport;
+    private boolean isOut;
 
     public Teleport() {
         setAnimation(new Animation("sprites/lift.png"));
+        isOut=false;
     }
     public Teleport(Teleport destinationTeleport) {
         this.destinationTeleport = destinationTeleport;
         setAnimation(new Animation("sprites/lift.png"));
+        isOut=false;
+    }
+    private boolean isInMiddle(Player player) {
+        boolean x1=player.getPosX()+16>=this.getPosX();
+        boolean x2=player.getPosX()+16<=this.getPosX()+48;
+        boolean y1=player.getPosY()+16>=this.getPosY();
+        boolean y2=player.getPosY()+16<=this.getPosY()+48;
+        return ((x1&&x2)&&(y1&&y2));
+    }
+
+    private boolean teleporting(Player player) {
+        if (!isOut) {
+            return true;
+        } else {
+            isOut = isInMiddle(player);
+            return false;
+        }
+    }
+
+    public void teleport() {
+        Player player=(Player)getScene().getFirstActorByName("Player");
+        if(player == null)return;
+        if((teleporting(player)&&(this.intersects(player)&& isInMiddle(player)))&&destinationTeleport!=null){
+            destinationTeleport.teleportPlayer(player);
+        }
     }
 
     public Teleport getDestination() {
@@ -21,7 +48,9 @@ public class Teleport extends AbstractActor {
     }
 
     public void setDestination(Teleport destinationTeleport) {
-        this.destinationTeleport = destinationTeleport;
+        if (destinationTeleport!=this && destinationTeleport!=null) {
+            this.destinationTeleport = destinationTeleport;
+        }
     }
 
     private boolean teleported(Player player) {
@@ -35,16 +64,18 @@ public class Teleport extends AbstractActor {
     }
 
     public void teleportPlayer(Player player) {
+        if(player!=null){
+            this.setIsOut(true);
+            player.setPosition(this.getPosX()+8,this.getPosY()+8);
 
-        if (destinationTeleport != null ) {
-            if (player.getPosX()+(player.getWidth()/2)>=this.getPosX() &&
-            (player.getPosX()+(player.getWidth()/2))<=this.getPosX()+this.getWidth() &&
-            (player.getPosY()+(player.getHeight()/2))>=this.getPosY() &&
-            (player.getPosY()+(player.getHeight()/2))<=this.getPosY()+this.getHeight()) {
-                player.setPosition(
-                    destinationTeleport.getPosX() + ((destinationTeleport.getHeight() / 2) - (player.getHeight() / 2)),
-                    destinationTeleport.getPosY() + ((destinationTeleport.getWidth() / 2) - (player.getWidth() / 2)));
-            }
         }
+    }
+
+    public boolean isOut() {
+        return isOut;
+    }
+
+    private void setIsOut(boolean isOut) {
+        this.isOut = isOut;
     }
 }
