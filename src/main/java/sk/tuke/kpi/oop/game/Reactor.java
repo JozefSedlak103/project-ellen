@@ -121,16 +121,16 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
             if(getDamage()<0) damage=0;
             updateAnimation();
             return true;
+        } else {
+            updateAnimation();
+            return false;
         }
-        return false;
-
     }
 
-    //uloha 4.3 otestovat funkcnost
-    //pokracovat ulohou 4.4
 
     private void setTemperature(int temperature) {
         this.temperature = temperature;
+        updateAnimation();
     }
 
     public boolean extinguish() {
@@ -140,20 +140,24 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
         return true;
     }
 
+    @Override
     public void turnOn() {
-        if(device!=null && getDamage()<100) {
-            device.setPowered(true);
+        if(getDamage()<100) {
+            for (EnergyConsumer device : devices) {
+                device.setPowered(true);
+            }
             isOn = true;
             updateAnimation();
         }
     }
 
+    @Override
     public void turnOff() {
-        if(device!=null) {
+        isOn = false;
+        for (EnergyConsumer device: devices) {
             device.setPowered(false);
-            isOn = false;
-            updateAnimation();
         }
+        updateAnimation();
     }
 
     public boolean isOn() {
