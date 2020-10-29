@@ -120,8 +120,10 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
 
             if(getDamage()<0) damage=0;
             updateAnimation();
+            return true;
         }
-        return true;
+        return false;
+
     }
 
     //uloha 4.3 otestovat funkcnost
@@ -139,18 +141,18 @@ public class Reactor extends AbstractActor implements Switchable, Repairable {
     }
 
     public void turnOn() {
-        isOn = true;
-        updateAnimation();
         if(device!=null && getDamage()<100) {
             device.setPowered(true);
+            isOn = true;
+            updateAnimation();
         }
     }
 
     public void turnOff() {
-        isOn = false;
-        updateAnimation();
         if(device!=null) {
             device.setPowered(false);
+            isOn = false;
+            updateAnimation();
         }
     }
 

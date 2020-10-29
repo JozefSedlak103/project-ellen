@@ -1,7 +1,5 @@
 package sk.tuke.kpi.oop.game;
 
-import org.jetbrains.annotations.NotNull;
-import sk.tuke.kpi.gamelib.Scene;
 import sk.tuke.kpi.gamelib.actions.Invoke;
 import sk.tuke.kpi.gamelib.framework.AbstractActor;
 import sk.tuke.kpi.gamelib.framework.Player;
@@ -10,18 +8,12 @@ import sk.tuke.kpi.gamelib.graphics.Animation;
 
 public class Helicopter extends AbstractActor {
     private Player player;
-    private Animation heliAnim;
 
     public Helicopter() {
-        heliAnim = new Animation("sprites/heli.png",64,64, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
+        Animation heliAnim = new Animation("sprites/heli.png",64,64, 0.1f, Animation.PlayMode.LOOP_PINGPONG);
         setAnimation(heliAnim);
     }
 
-    @Override
-    public void addedToScene(@NotNull Scene scene) {
-        super.addedToScene(scene);
-
-    }
 
     public void searchAndDestroy() {
         new Loop<>(new Invoke<>(this::killPlayer)).scheduleFor(this);
