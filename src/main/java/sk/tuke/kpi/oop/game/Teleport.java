@@ -66,12 +66,12 @@ public class Teleport extends AbstractActor {
 
 
 
-    public Teleport getDestinationTeleport() {
+    public Teleport getDestination() {
         return destinationTeleport;
     }
 
-    public void setDestinationTeleport(Teleport destinationTeleport) {
-        if (destinationTeleport!=this&&destinationTeleport!=null)
+    public void setDestination(Teleport destinationTeleport) {
+        if (destinationTeleport!=this && destinationTeleport!=null)
             this.destinationTeleport = destinationTeleport;
     }
 
