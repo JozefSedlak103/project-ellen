@@ -2,7 +2,7 @@ package sk.tuke.kpi.oop.game;
 
 import sk.tuke.kpi.gamelib.*;
 import sk.tuke.kpi.gamelib.backends.lwjgl.LwjglBackend;
-import sk.tuke.kpi.oop.game.scenarios.FirstSteps;
+import sk.tuke.kpi.oop.game.scenarios.MissionImpossible;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,13 +10,12 @@ public class Main {
 
         Game game = new GameApplication(windowSetup, new LwjglBackend());
 
-        Scene scene = new World("world");
+        Scene scene = new World("world","maps/mission-impossible.tmx", new MissionImpossible.Factory());
 
-        SceneListener listener = new FirstSteps();
+        SceneListener listener = new MissionImpossible();
 
         game.addScene(scene);
         scene.addListener(listener);
-
 
 
         game.getInput().onKeyPressed(Input.Key.ESCAPE, game::stop);

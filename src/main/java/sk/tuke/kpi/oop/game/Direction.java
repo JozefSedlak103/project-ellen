@@ -1,5 +1,7 @@
 package sk.tuke.kpi.oop.game;
 
+import java.util.Random;
+
 public enum Direction {
     NONE(0,0),
     NORTH(0,1),
@@ -9,7 +11,8 @@ public enum Direction {
     NORHTEAST(1,1),
     NORTHWEST(-1,1),
     SOUTHEAST(1,-1),
-    SOUTHWEST(-1,-1);
+    SOUTHWEST(-1,-1),
+    Random(getRandomNumberInRange(-1, 1), getRandomNumberInRange(-1, 1));
 
     Direction(int dx,int dy){
         this.dx = dx;
@@ -31,7 +34,7 @@ public enum Direction {
         return dy;
     }
 
-    public static Direction getDirection(float angle) {
+    public static Direction fromAngle(float angle) {
         float degrees;
         if (angle>180) {
             degrees = angle-360;
@@ -54,6 +57,16 @@ public enum Direction {
             }
         }
         return NONE;
+    }
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        java.util.Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 
     public Direction combine(Direction other){
