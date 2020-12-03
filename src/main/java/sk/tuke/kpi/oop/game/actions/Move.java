@@ -22,11 +22,32 @@ public class Move<A extends Movable> implements Action<A> {
         this.direction = direction;
     }
 
+    private void move(float deltaTime) {
+
+        if (actor==null)return;
+        if (!actor.getScene().getMap().intersectsWithWall(actor)){
+            actor.setPosition(actor.getPosX() + direction.getDx() * actor.getSpeed(), actor.getPosY() + direction.getDy() * actor.getSpeed());
+
+            if (actor.getScene().getMap().intersectsWithWall(actor)){
+                actor.collidedWithWall();
+                if(actor==null)return;
+                actor.setPosition(actor.getPosX() - direction.getDx() * actor.getSpeed(), actor.getPosY() - direction.getDy() * actor.getSpeed());
+            }
+        }else{
+            stop();
+        }
+        time = time + deltaTime;
+    }
 
     @Nullable
     @Override
     public A getActor() {
         return actor;
+    }
+
+    @Override
+    public void reset() {
+        done = false;
     }
 
     @Override
@@ -49,33 +70,11 @@ public class Move<A extends Movable> implements Action<A> {
                 actor.startedMoving(direction);
                 x = false;
             }
-            move(deltaTime);
-            if (time>=duration) {
-                stop();
-            }
-        } else {
-            move(deltaTime);
-            if (time>=duration) {
-                stop();
-            }
         }
-    }
-
-    private void move(float deltaTime) {
-
-        if (actor==null)return;
-        if (!actor.getScene().getMap().intersectsWithWall(actor)){
-            actor.setPosition(actor.getPosX() + direction.getDx() * actor.getSpeed(), actor.getPosY() + direction.getDy() * actor.getSpeed());
-
-            if (actor.getScene().getMap().intersectsWithWall(actor)){
-                //actor.collidedWithWall();
-                if(actor==null)return;
-                actor.setPosition(actor.getPosX() - direction.getDx() * actor.getSpeed(), actor.getPosY() - direction.getDy() * actor.getSpeed());
-            }
-        }else{
+        move(deltaTime);
+        if (time>=duration) {
             stop();
         }
-        time = time + deltaTime;
     }
 
     public void stop(){
@@ -86,8 +85,5 @@ public class Move<A extends Movable> implements Action<A> {
         }
     }
 
-    @Override
-    public void reset() {
-        done = false;
-    }
+
 }

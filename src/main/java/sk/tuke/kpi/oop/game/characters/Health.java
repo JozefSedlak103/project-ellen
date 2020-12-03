@@ -38,16 +38,6 @@ public class Health {
         currentHealth = maxHealth;
     }
 
-    public void drain(int amount) {
-        currentHealth -= amount;
-        if (currentHealth < 0) {
-            currentHealth = 0;
-        }
-        if(currentHealth == 0){
-            exhaust();
-        }
-    }
-
     public void exhaust() {
         currentHealth = 0;
         if (firstTime) {
@@ -60,6 +50,15 @@ public class Health {
         effectList.add(effect);
     }
 
+    public void drain(int amount) {
+        currentHealth -= amount;
+        if (currentHealth < 0) {
+            currentHealth = 0;
+        }
+        if(currentHealth == 0){
+            exhaust();
+        }
+    }
 
     @FunctionalInterface
     public interface ExhaustionEffect {

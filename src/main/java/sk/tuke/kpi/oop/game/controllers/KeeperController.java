@@ -35,10 +35,6 @@ public class KeeperController implements KeyboardListener {
             drop = new Drop<>();
             drop.scheduleFor(actor);
         }
-        if(key == Input.Key.S){
-            shift = new Shift<>();
-            shift.scheduleFor(actor);
-        }
         if(key == Input.Key.U){
             usable = (Usable<?>) Objects.requireNonNull(actor.getScene()).getActors().stream().filter(actor::intersects).filter(Usable.class::isInstance)
                 .map(Usable.class::cast).findFirst().orElse(null);
@@ -46,6 +42,10 @@ public class KeeperController implements KeyboardListener {
                 new Use<>(usable).scheduleForIntersectingWith(actor);
 
             }
+        }
+        if(key == Input.Key.S){
+            shift = new Shift<>();
+            shift.scheduleFor(actor);
         }
         if(key == Input.Key.B){
             if(actor.getBackpack().peek() == null | !(actor.getBackpack().peek() instanceof Usable))return;
